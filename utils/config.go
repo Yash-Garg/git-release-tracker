@@ -3,6 +3,7 @@ package utils
 import (
 	"log"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/Yash-Garg/git-release-tracker/constants"
@@ -16,8 +17,9 @@ func init() {
 }
 
 func GetEnvVars() {
-	constants.ChatID = os.Getenv("CHAT_ID")
-	if len(constants.ChatID) == 0 {
+	chatId, _ := strconv.ParseInt(os.Getenv("CHAT_ID"), 0, 64)
+	constants.ChatID = chatId
+	if chatId == 0 {
 		log.Println("CHAT_ID is not set")
 	}
 

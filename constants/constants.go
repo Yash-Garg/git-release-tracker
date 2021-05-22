@@ -1,5 +1,5 @@
 package constants
 
 var BotToken string
-var ChatID string
+var ChatID int64
 var RepoList []string
