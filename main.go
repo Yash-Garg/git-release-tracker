@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	utils.GetEnvVars()
+	utils.GetJsonData()
 }
