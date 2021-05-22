@@ -5,6 +5,7 @@ import (
 	"github.com/joho/godotenv"
 	"log"
 	"os"
+	"strings"
 )
 
 func init() {
@@ -22,5 +23,15 @@ func GetEnvVars() {
 	constants.BotToken = os.Getenv("BOT_TOKEN")
 	if len(constants.BotToken) == 0 {
 		log.Println("BOT_TOKEN is not set")
+	}
+
+	repoList := os.Getenv("REPO_LIST")
+	if len(repoList) == 0 {
+		log.Println("REPO_LIST is not set")
+	}
+
+	repos := strings.Split(repoList, ",")
+	for _, s := range repos {
+		constants.RepoList = append(constants.RepoList, strings.TrimSpace(s))
 	}
 }
