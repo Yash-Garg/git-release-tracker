@@ -1,13 +1,13 @@
-package utils
+package telegram
 
 import (
 	"fmt"
+	"net/http"
+
 	"github.com/PaulSonOfLars/gotgbot/v2"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers"
-	"github.com/Yash-Garg/git-release-tracker/commands"
 	"github.com/Yash-Garg/git-release-tracker/constants"
-	"net/http"
 )
 
 func RunBot() {
@@ -23,9 +23,10 @@ func RunBot() {
 	updater := ext.NewUpdater(nil)
 	dispatcher := updater.Dispatcher
 
-	dispatcher.AddHandler(handlers.NewCommand("start", commands.Start))
+	dispatcher.AddHandler(handlers.NewCommand("start", Start))
+	dispatcher.AddHandler(handlers.NewCommand("notify", Notify))
 
-	err = updater.StartPolling(b, &ext.PollingOpts{DropPendingUpdates: true})
+	err = updater.StartPolling(b, &ext.PollingOpts{DropPendingUpdates: false})
 	if err != nil {
 		panic("Failed to start polling: " + err.Error())
 	}

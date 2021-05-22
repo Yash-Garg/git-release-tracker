@@ -1,11 +1,12 @@
 package utils
 
 import (
-	"github.com/Yash-Garg/git-release-tracker/constants"
-	"github.com/joho/godotenv"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/Yash-Garg/git-release-tracker/constants"
+	"github.com/joho/godotenv"
 )
 
 func init() {
