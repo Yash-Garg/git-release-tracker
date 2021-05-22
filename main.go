@@ -1,9 +1,8 @@
 package main
 
-import (
-	"github.com/Yash-Garg/git-release-tracker/utils"
-)
+import "github.com/Yash-Garg/git-release-tracker/utils"
 
 func main() {
-	utils.GetJsonData()
+	utils.GetEnvVars()
+	utils.RunBot()
 }

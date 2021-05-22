@@ -30,7 +30,7 @@ func GetJsonData() models.Release {
 	}
 
 	var release models.Release
-	err = json.Unmarshal([]byte(data), &release)
+	err = json.Unmarshal(data, &release)
 	if err != nil {
 		log.Println("ERROR: ", err)
 	}
