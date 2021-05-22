@@ -13,6 +13,7 @@ import (
 func init() {
 	if err := godotenv.Load(".env"); err != nil {
 		log.Println("No file named .env found")
+		os.Exit(1)
 	}
 }
 
@@ -21,16 +22,19 @@ func GetEnvVars() {
 	constants.ChatID = chatId
 	if chatId == 0 {
 		log.Println("CHAT_ID is not set")
+		os.Exit(1)
 	}
 
 	constants.BotToken = os.Getenv("BOT_TOKEN")
 	if len(constants.BotToken) == 0 {
 		log.Println("BOT_TOKEN is not set")
+		os.Exit(1)
 	}
 
 	repoList := os.Getenv("REPO_LIST")
 	if len(repoList) == 0 {
 		log.Println("REPO_LIST is not set")
+		os.Exit(1)
 	}
 
 	repos := strings.Split(repoList, ",")
