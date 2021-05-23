@@ -46,12 +46,20 @@ func regularCheck(b *gotgbot.Bot) {
 			repo := constants.RepoList[i]
 			url := fmt.Sprintf(`https://api.github.com/repos/%s/releases/latest`, repo)
 			data := utils.GetJsonData(url)
-			message := fmt.Sprintf(`Requested ID: %d`, data.ID)
+
 			fileName := strings.Replace(repo, "/", "_", 1)
 			lastUpdateID := utils.GetLastID(fileName)
+			repoURL := "https://github.com/" + repo
+
+			changelog := data.Body
+			if changelog == "" {
+				changelog = "No changes specified"
+			}
+
+			message := fmt.Sprintf("<b>New <a href='%s'>%s</a> release detected !</b>\n\n<b>Author : </b><a href='%s'>%s</a>\n<b>Release Name : </b><code>%s</code>\n<b>Release Tag : </b><a href='%s'>%s</a>\n<b>Branch : </b><code>%s</code>\n<b>Changelog : </b><code>%s</code>", repoURL, strings.Split(repo, "/")[1], data.Author.HTMLURL, data.Author.Login, data.Name, data.HTMLURL, data.TagName, data.TargetCommitish, changelog)
 
 			if lastUpdateID != data.ID {
-				_, err := b.SendMessage(constants.ChatID, message, &gotgbot.SendMessageOpts{ParseMode: "MarkdownV2"})
+				_, err := b.SendMessage(constants.ChatID, message, &gotgbot.SendMessageOpts{ParseMode: "HTML", DisableWebPagePreview: true})
 				if err != nil {
 					log.Fatalln("ERROR: ", err)
 				} else {
@@ -62,6 +70,6 @@ func regularCheck(b *gotgbot.Bot) {
 				log.Printf(`%s is up to date!`, repo)
 			}
 		}
-		time.Sleep(time.Second * 30)
+		time.Sleep(time.Minute * 1)
 	}
 }
