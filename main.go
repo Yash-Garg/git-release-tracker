@@ -35,7 +35,7 @@ func main() {
 		log.Panicln("Failed to start polling: " + err.Error())
 	}
 
-	fmt.Printf("%s has been started...", bot.User.FirstName)
+	log.Printf("%s has been started...\n", bot.User.FirstName)
 	regularCheck(bot)
 
 }
@@ -51,10 +51,13 @@ func regularCheck(b *gotgbot.Bot) {
 			lastUpdateID := utils.GetLastID(fileName)
 
 			if lastUpdateID != data.ID {
-				b.SendMessage(constants.ChatID, message, &gotgbot.SendMessageOpts{ParseMode: "MarkdownV2"})
-
-				log.Printf("\nRelease Sent (%s) - %d", repo, data.ID)
-				utils.CreateFile(fileName, strconv.Itoa(int(data.ID)))
+				_, err := b.SendMessage(constants.ChatID, message, &gotgbot.SendMessageOpts{ParseMode: "MarkdownV2"})
+				if err != nil {
+					log.Fatalln("ERROR: ", err)
+				} else {
+					log.Printf("Release Sent (%s) - %d", repo, data.ID)
+					utils.CreateFile(fileName, strconv.Itoa(int(data.ID)))
+				}
 			} else {
 				log.Printf(`%s is up to date!`, repo)
 			}

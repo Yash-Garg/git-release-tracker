@@ -17,11 +17,7 @@ func CreateFile(fileName string, data string) {
 
 func GetLastID(fileName string) int64 {
 	path := fmt.Sprintf(`temp/%s.txt`, fileName)
-	data, err := ioutil.ReadFile(path)
-	if err != nil {
-		log.Println("Error reading file: ", err)
-	}
-
+	data, _ := ioutil.ReadFile(path)
 	releaseID, _ := strconv.Atoi(string(data))
 	return int64(releaseID)
 }
