@@ -17,7 +17,7 @@ func init() {
 }
 
 func main() {
-	b, err := gotgbot.NewBot(constants.BotToken, &gotgbot.BotOpts{
+	bot, err := gotgbot.NewBot(constants.BotToken, &gotgbot.BotOpts{
 		Client:      http.Client{},
 		GetTimeout:  gotgbot.DefaultGetTimeout,
 		PostTimeout: gotgbot.DefaultPostTimeout,
@@ -28,13 +28,17 @@ func main() {
 
 	updater := ext.NewUpdater(nil)
 
-	err = updater.StartPolling(b, &ext.PollingOpts{DropPendingUpdates: false})
+	err = updater.StartPolling(bot, &ext.PollingOpts{DropPendingUpdates: false})
 	if err != nil {
 		panic("Failed to start polling: " + err.Error())
 	}
 
-	fmt.Printf("%s has been started...", b.User.Username)
+	fmt.Printf("%s has been started...", bot.User.FirstName)
+	regularCheck(bot)
 
+}
+
+func regularCheck(b *gotgbot.Bot) {
 	for {
 		for i := range constants.RepoList {
 			url := fmt.Sprintf(`https://api.github.com/repos/%s/releases/latest`, constants.RepoList[i])
