@@ -56,7 +56,16 @@ func regularCheck(b *gotgbot.Bot) {
 				changelog = "No changes specified"
 			}
 
-			message := fmt.Sprintf("<b>New <a href='%s'>%s</a> release detected !</b>\n\n<b>Author : </b><a href='%s'>%s</a>\n<b>Release Name : </b><code>%s</code>\n<b>Release Tag : </b><a href='%s'>%s</a>\n<b>Branch : </b><code>%s</code>\n<b>Changelog : </b><code>%s</code>", repoURL, strings.Split(repo, "/")[1], data.Author.HTMLURL, data.Author.Login, data.Name, data.HTMLURL, data.TagName, data.TargetCommitish, changelog)
+			var assetsData string
+			if len(data.Assets) != 0 {
+				for i := range data.Assets {
+					assetsData = assetsData + fmt.Sprintf("- <a href='%s'>%s</a>\n", data.Assets[i].BrowserDownloadURL, data.Assets[i].Name)
+				}
+			} else {
+				assetsData = "No assets found"
+			}
+
+			message := fmt.Sprintf("<b>New <a href='%s'>%s</a> release detected !</b>\n\n<b>Author : </b><a href='%s'>%s</a>\n<b>Release Name : </b><code>%s</code>\n<b>Release Tag : </b><a href='%s'>%s</a>\n<b>Branch : </b><code>%s</code>\n<b>Changelog : </b><code>%s</code>\n\n<b>Downloads : </b>\n%s", repoURL, strings.Split(repo, "/")[1], data.Author.HTMLURL, data.Author.Login, data.Name, data.HTMLURL, data.TagName, data.TargetCommitish, changelog, assetsData)
 
 			if lastUpdateID != data.ID {
 				_, err := b.SendMessage(constants.ChatID, message, &gotgbot.SendMessageOpts{ParseMode: "HTML", DisableWebPagePreview: true})
